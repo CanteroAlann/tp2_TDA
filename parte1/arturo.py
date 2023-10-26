@@ -8,6 +8,8 @@ if len(sys.argv) != 2:
 
 
 def maxima_habilidad_caballero(caballeros):
+    if len(caballeros) == 0:
+        return []
     caballeros_circular = caballeros + caballeros
     c = 0
     
