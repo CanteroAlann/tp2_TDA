@@ -10,9 +10,7 @@ if len(sys.argv) != 2:
 def maxima_habilidad_caballero(caballeros):
     if len(caballeros) == 0:
         return []
-    caballeros_circular = caballeros + caballeros
-    c = 0
-    
+    caballeros_circular = caballeros + caballeros    
     optimos = [0 for _ in range(len(caballeros_circular))]
     optimos[0] = caballeros[0][1]
     max_habilidad = optimos[0]
