@@ -1,3 +1,11 @@
+import sys
+import os
+import file_reader
+
+if len(sys.argv) != 2:
+    sys.exit(1)
+
+
 
 def maxima_habilidad_caballero(caballeros):
     caballeros_circular = caballeros + caballeros
@@ -26,8 +34,15 @@ def maxima_habilidad_caballero(caballeros):
             c = 1
         if c == caballeros_elegidos_local:
             break
-    return max_habilidad, caballeros_elegidos_global
+    return caballeros_elegidos_global
 
-caballeros = [("Bors", 8), ("Gawain", -8), ("Percival", 9), ("Pellinor", -9), ("Galahad", -10), ("Gareth", -11), ("Lancelot",12)]
-print(maxima_habilidad_caballero(caballeros))
 
+
+
+def main():
+    archivo_caballeros = sys.argv[1]
+    caballeros = file_reader.leer_archivo(archivo_caballeros)
+    print(maxima_habilidad_caballero(caballeros))
+
+if __name__ == "__main__":
+    main()
