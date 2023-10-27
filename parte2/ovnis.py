@@ -15,6 +15,7 @@ def obtener_flujo_maximo(red, fuente, sumidero):
     grafo_residual = copy.deepcopy(red)
     camino = obtener_camino(grafo_residual, fuente, sumidero)
     while camino is not None:
+        print(camino)
         bottleneck = min_peso(red, camino)
         for i in range(1, len(camino)):
             if red.son_adyacentes(camino[i-1], camino[i]):
