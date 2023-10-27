@@ -29,6 +29,17 @@ class Grafo:
         if not self.dirigido:
             self.vertices[w][v] = peso
         return True
+    
+    #  Cambia el peso de una arista
+    # Pre: el Grafo fue creado y ambos vertices se encuentran en el Grafo
+    # Post: se cambió el peso de la arista de "v" a "w" por el pasado por parámetro. Se devolvió False en caso de que
+    # "v" o "w" no pertenecieran al Grafo, y True en caso contrario
+    def cambiar_peso_arista(self, v, w, peso):
+        if not self.son_adyacentes(v, w): return False
+        self.vertices[v][w] = peso
+        if not self.dirigido:
+            self.vertices[w][v] = peso
+        return True
 
     # Indica si dos vertices son adyacentes o no
     # Pre: el Grafo fue creado y ambos vertices están en el Grafo
