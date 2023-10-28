@@ -85,7 +85,11 @@ def obtener_camino(red, fuente, sumidero):
 
 
 def min_peso(red, camino):
-    return min(camino)
+    pesos = []
+    for i in range(1, len(camino)):
+        pesos.append(red.peso_arista(camino[i-1], camino[i]))
+    print(min(pesos))
+    return min(pesos)
 
 
 def main():
