@@ -46,6 +46,7 @@ def actualizar_grafo_residual(grafo_residual, v, w, bottleneck):
 
 
 def obtener_camino(red, fuente, sumidero):
+    '''Obtiene un camino entre la fuente y el sumidero en la red residual (BFS)'''
     # Crear una copia de la red para trabajar con ella sin modificar la original
     red_residual = copy.deepcopy(red)
 
@@ -85,10 +86,10 @@ def obtener_camino(red, fuente, sumidero):
 
 
 def min_peso(red, camino):
+    '''Busco el bottleneck minimo flujo que puedo enviar por eso camino'''
     pesos = []
     for i in range(1, len(camino)):
         pesos.append(red.peso_arista(camino[i-1], camino[i]))
-    print(min(pesos))
     return min(pesos)
 
 
