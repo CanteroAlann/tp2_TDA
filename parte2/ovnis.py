@@ -15,7 +15,6 @@ def obtener_flujo_maximo(red, fuente, sumidero):
     grafo_residual = copy.deepcopy(red)
     camino = obtener_camino(grafo_residual, fuente, sumidero)
     while camino is not None:
-        print(camino)
         bottleneck = min_peso(grafo_residual, camino)
         for i in range(1, len(camino)):
             if red.son_adyacentes(camino[i-1], camino[i]):
@@ -26,7 +25,11 @@ def obtener_flujo_maximo(red, fuente, sumidero):
                 actualizar_grafo_residual(grafo_residual, camino[i], camino[i-1], int(bottleneck))
 
         camino = obtener_camino(grafo_residual, fuente, sumidero)
-    return flujo
+    
+
+
+
+    return flujo, grafo_residual
 
 
 
@@ -83,8 +86,27 @@ def obtener_camino(red, fuente, sumidero):
     # Si no se encuentra ningún camino válido, retornar None
     return None
     
+def corte_minimo(red, grafo_residual):
+    '''Busco las conexiones que se cortan'''
+    nodos_alcanzables = set()
+    cola = ['R']
 
+    # Realizar un recorrido BFS en el grafo residual para encontrar los nodos alcanzables desde la fuente
+    while cola:
+        nodo_actual = cola.pop(0)
+        nodos_alcanzables.add(nodo_actual)
+        for adyacente in grafo_residual.adyacentes(nodo_actual):
+            if adyacente not in nodos_alcanzables:
+                cola.append(adyacente)
 
+    corte = set()
+    for nodo in nodos_alcanzables:
+        for adyacente in red.adyacentes(nodo):
+            if adyacente not in nodos_alcanzables:
+                corte.add((nodo, adyacente))
+
+    return corte
+    
 def min_peso(red, camino):
     '''Busco el bottleneck minimo flujo que puedo enviar por eso camino'''
     pesos = []
@@ -93,10 +115,18 @@ def min_peso(red, camino):
     return min(pesos)
 
 
+def mostrar_configuracion_conexiones(flujo):
+    '''Muestra las configuraciones de conexiones'''
+    for conexion in flujo:
+        if flujo[conexion] > 0:
+            print(f"{conexion[0]}  -- {flujo[conexion]} -->  {conexion[1]}")
+
 def main():
     archivo_red_servidores = sys.argv[1]
     red = file_reader.leer_archivo(archivo_red_servidores)
-    print(obtener_flujo_maximo(red, 'R', 'S'))
+    flujo, grafo_residual = obtener_flujo_maximo(red, 'R', 'S')
+    mostrar_configuracion_conexiones(flujo)
+    print(corte_minimo(red, grafo_residual))
 
 if __name__ == "__main__":
     main()
