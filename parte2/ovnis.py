@@ -50,48 +50,35 @@ def actualizar_grafo_residual(grafo_residual, v, w, bottleneck):
 
 def obtener_camino(red, fuente, sumidero):
     '''Obtiene un camino entre la fuente y el sumidero en la red residual (BFS)'''
-    # Crear una copia de la red para trabajar con ella sin modificar la original
     red_residual = copy.deepcopy(red)
 
     # Inicializar una lista para realizar el recorrido BFS
     cola = [(fuente, [fuente])]
-
-    # Mientras haya nodos en la cola
     while cola:
         nodo_actual, camino_actual = cola.pop(0)
-
-        # Obtener los vecinos del nodo actual en la red residual
         vecinos = red_residual.adyacentes(nodo_actual)
-
         for vecino in vecinos:
-            # Obtener la capacidad residual de la arista
             capacidad_residual = red_residual.peso_arista(nodo_actual, vecino)
-
             # Si la capacidad residual es mayor que cero, significa que hay un camino
             # válido en la red residual
             if capacidad_residual and capacidad_residual > 0:
-                # Agregar el vecino al camino actual
                 nuevo_camino = camino_actual + [vecino]
-
                 # Si hemos llegado al sumidero, hemos encontrado un camino
                 if vecino == sumidero:
                     return nuevo_camino
-
                 # Agregar el vecino y su camino al final de la cola para seguir buscando
                 cola.append((vecino, nuevo_camino))
-
                 # Marcar la arista como visitada eliminando la capacidad en la red residual
                 red_residual.borrar_arista(nodo_actual, vecino)
-
     # Si no se encuentra ningún camino válido, retornar None
     return None
     
 def corte_minimo(red, grafo_residual):
-    '''Busco las conexiones que se cortan'''
+    '''Busco el corte minimo de la red residual'''
     nodos_alcanzables = set()
     cola = ['R']
-
-    # Realizar un recorrido BFS en el grafo residual para encontrar los nodos alcanzables desde la fuente
+    # Realizar un recorrido BFS en el grafo residual para encontrar los nodos 
+    # alcanzables desde la fuente
     while cola:
         nodo_actual = cola.pop(0)
         nodos_alcanzables.add(nodo_actual)
@@ -125,22 +112,23 @@ def mostrar_configuracion_conexiones(flujo):
             else:
                 print(f"{conexion[0]}  -- {flujo[conexion]} -->  {conexion[1]}")
 
-def mostar_corte_minimo(corte_minimo):
-    '''Muestra el corte minimo'''
+def mostrar_conexiones_a_mejorar(corte_minimo):
+    '''Muestra las conexiones que hay que mejorar'''
     print("Conexiones a mejorar para aumentar capacidad de transmisión de información de la red:")
     for conexion in corte_minimo:
+        if 'ficticio' in conexion[0]:
+            continue
         if 'ficticio' in conexion[2]:
             print(f"{conexion[0]}  -- {conexion[1]} -->  {conexion[2].split(' ')[-1]}")
         else: 
             print(f"{conexion[0]}  -- {conexion[1]} -->  {conexion[2]}")
 
 def main():
-    archivo_red_servidores = sys.argv[1]
-    red = file_reader.leer_archivo(archivo_red_servidores)
+    red = file_reader.leer_archivo(sys.argv[1])
     flujo, grafo_residual = obtener_flujo_maximo(red, 'R', 'S')
-    corte = corte_minimo(red, grafo_residual)
+    corte_min = corte_minimo(red, grafo_residual)
     mostrar_configuracion_conexiones(flujo)
-    mostar_corte_minimo(corte)
+    mostrar_conexiones_a_mejorar(corte_min)
 
 if __name__ == "__main__":
     main()
