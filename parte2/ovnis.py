@@ -118,13 +118,21 @@ def mostrar_configuracion_conexiones(flujo):
     '''Muestra las configuraciones de conexiones'''
     for conexion in flujo:
         if flujo[conexion] > 0:
-            print(f"{conexion[0]}  -- {flujo[conexion]} -->  {conexion[1]}")
+            if 'ficticio' in conexion[0]:
+                continue
+            if 'ficticio' in conexion[1]:
+                print(f"{conexion[0]}  -- {flujo[conexion]} -->  {conexion[1].split(' ')[-1]}")
+            else:
+                print(f"{conexion[0]}  -- {flujo[conexion]} -->  {conexion[1]}")
 
 def mostar_corte_minimo(corte_minimo):
     '''Muestra el corte minimo'''
     print("Conexiones a mejorar para aumentar capacidad de transmisión de información de la red:")
     for conexion in corte_minimo:
-        print(f"{conexion[0]}  -- {conexion[1]} -->  {conexion[2]}")
+        if 'ficticio' in conexion[2]:
+            print(f"{conexion[0]}  -- {conexion[1]} -->  {conexion[2].split(' ')[-1]}")
+        else: 
+            print(f"{conexion[0]}  -- {conexion[1]} -->  {conexion[2]}")
 
 def main():
     archivo_red_servidores = sys.argv[1]
