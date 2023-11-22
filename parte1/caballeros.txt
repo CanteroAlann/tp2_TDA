@@ -1,7 +1,7 @@
-Bors,8
-Gawain,-8
-Perceval,9
-Pellinore,-9
-Galahad,-10
-Gareth,-11
-Lancelot,12
+Bors,1
+Gawain,1
+Perceval,1
+Pellinore,1
+Galahad,8
+Gareth,-3
+Lancelot,4
